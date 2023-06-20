@@ -1,8 +1,7 @@
 package com.sohaib.e_bankbackend.web;
 
-import com.sohaib.e_bankbackend.dtos.AccountHistoryDTO;
-import com.sohaib.e_bankbackend.dtos.AccountOperationDTO;
-import com.sohaib.e_bankbackend.dtos.BankAccountDTO;
+import com.sohaib.e_bankbackend.dtos.*;
+import com.sohaib.e_bankbackend.exceptions.BalanceNotSufficientExeption;
 import com.sohaib.e_bankbackend.exceptions.BankAccountNotFoundException;
 import com.sohaib.e_bankbackend.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +39,25 @@ public class BankAccountRestAPI {
             @RequestParam(name="page", defaultValue = "0") int page,
             @RequestParam(name="size", defaultValue = "5") int size) throws BankAccountNotFoundException {
         return bankAccountService.getaccountHistory(accountId, page, size);
+    }
+
+    @PostMapping("/accounts/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientExeption {
+        System.out.println("user Is: "+debitDTO.getAccountId());
+        System.out.println("user amoun: "+debitDTO.getAmount());
+        System.out.println("user Is: "+debitDTO.getDescription());
+        this.bankAccountService.debit(debitDTO.getAccountId(), debitDTO.getAmount(), debitDTO.getDescription());
+        return debitDTO;
+    }
+    @PostMapping("/accounts/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException{
+        this.bankAccountService.credit(creditDTO.getAccountId(), creditDTO.getAmount(), creditDTO.getDescription());
+        return creditDTO;
+    }
+    @PostMapping("/accounts/transfer")
+    public void transfer(@RequestBody TransferRequestDTO transferRequestDTO) throws BankAccountNotFoundException, BalanceNotSufficientExeption {
+        this.bankAccountService.transfer(transferRequestDTO.getAccountSource(),
+                transferRequestDTO.getAccountDestination(),
+                transferRequestDTO.getAmount());
     }
 }

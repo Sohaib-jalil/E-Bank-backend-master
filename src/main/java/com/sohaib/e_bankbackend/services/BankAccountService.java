@@ -1,10 +1,6 @@
 package com.sohaib.e_bankbackend.services;
 
 import com.sohaib.e_bankbackend.dtos.*;
-import com.sohaib.e_bankbackend.entities.BankAccount;
-import com.sohaib.e_bankbackend.entities.CurrentAccount;
-import com.sohaib.e_bankbackend.entities.Customer;
-import com.sohaib.e_bankbackend.entities.SavingAccount;
 import com.sohaib.e_bankbackend.exceptions.BalanceNotSufficientExeption;
 import com.sohaib.e_bankbackend.exceptions.BankAccountNotFoundException;
 import com.sohaib.e_bankbackend.exceptions.CustomerNotFoundException;
@@ -19,7 +15,7 @@ public interface BankAccountService {
     BankAccountDTO getBankAccount(String accountId) throws BankAccountNotFoundException;
     void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientExeption;
     void credit(String accountId, double amount, String description) throws BankAccountNotFoundException;
-    void transfer(String accountIdSource,String accountIdDestination, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientExeption;
+    void transfer(String accountIdSource,String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientExeption;
 
     List<BankAccountDTO> bankAccountList();
 
